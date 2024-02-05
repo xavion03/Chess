@@ -27,14 +27,13 @@ def evaluate_board():
     #based off material values from simplified evaluation function (https://www.chessprogramming.org/Simplified_Evaluation_Function#Piece_Values)
     material = 100 * (wp - bp) + 320 * (wn - bn) + 330 * (wb - bb) + 500 * (wr - br) + 900 * (wq - bq)
 
+    #must reverse the piece tables to match how python-chess numbers it's squares
+    pawntable = pawntable[::-1]
+    
     pawnsq = sum([pawntable[i] for i in board.pieces(chess.PAWN, chess.WHITE)])
     pawnsq= pawnsq + sum([-pawntable[chess.square_mirror(i)] for i in board.pieces(chess.PAWN, chess.BLACK)])
 
-num = chess.E2
-num
 
-num2 = pawntable[num]
-num2
 
 
 
