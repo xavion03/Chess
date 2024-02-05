@@ -59,3 +59,11 @@ kingstable = [
 -30,-40,-40,-50,-50,-40,-40,-30,
 -30,-40,-40,-50,-50,-40,-40,-30]
 
+#must reverse the piece tables to match how python-chess numbers it's squares
+tabledict = {
+  1 : pawntable[::-1],
+  2 : knightstable[::-1],
+  3 : bishopstable[::-1],
+  4 : rookstable[::-1],    
+  5 : queenstable[::-1],
+  6 : kingstable[::-1]}
