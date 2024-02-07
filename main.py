@@ -68,6 +68,19 @@ def alpha_beta_nega(alpha, beta, depth_left):
     if depth_left == 0:
         return quiescence(alpha, beta)
     
+    for move in board.legal_moves:
+        board.push(move)
+        score = -alpha_beta_nega( -beta, -alpha, depth_left-1)
+        board.pop()
+
+        if score >= beta:
+            return beta
+        if score > alpha:
+            alpha = score
+    
+    return alpha
+        
+    
 # function to implement quiescence search
 # https://www.chessprogramming.org/Quiescence_Search 
 def quiescence(alpha, beta):
@@ -82,5 +95,13 @@ def quiescence(alpha, beta):
     for move in board.legal_moves:
         if board.is_capture(move):
             board.push(move)
+            score = quiescence( -beta, -alpha)
+            board.pop()
+        
+        if score >= beta:
+            return beta
+        if score > alpha:
+            alpha = score
+
     return alpha
 
