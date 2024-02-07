@@ -9,7 +9,7 @@ board = chess.Board()
 #function to evaluate board
 #returns evaluation score
 def evaluate_board():
-    #taken from https://andreasstckl.medium.com/writing-a-chess-program-in-one-day-30daff4610ec
+    #based on/taken from https://andreasstckl.medium.com/writing-a-chess-program-in-one-day-30daff4610ec
 
     #conditional statement to see if white or black is in checkmate
     #if white checkmates black the function returns 9999, an evaluation of 9999 indicates victory
@@ -54,8 +54,33 @@ def evaluate_board():
     
     #returns the evaluation of the board in the form of the sum of the material evaluation and square evaluations
     total_evaluation = material_eval + square_eval
-    return total_evaluation
+    #if it is whites turn return positive, if blacks turn return negative
+    #for negmax search 
+    if board.turn:
+        return total_evaluation
+    else:
+        return -total_evaluation
 
+# function to implement negamax algorithm with alpha/beta pruning including quiescence search
+# https://www.chessprogramming.org/Alpha-Beta
+# alpha = lower bound score, beta = upperbound score, depthleft = search depth *depth is exponential
+def alpha_beta_nega(alpha, beta, depth_left):
+    if depth_left == 0:
+        return quiescence(alpha, beta)
+    
+# function to implement quiescence search
+# https://www.chessprogramming.org/Quiescence_Search 
+def quiescence(alpha, beta):
+    stand_pat = evaluate_board()
+    
+    if stand_pat == beta:
+        return beta
+    
+    if alpha < stand_pat:
+        alpha = stand_pat
 
-
+    for move in board.legal_moves:
+        if board.is_capture(move):
+            board.push(move)
+    return alpha
 
