@@ -105,3 +105,24 @@ def quiescence(alpha, beta):
 
     return alpha
 
+def find_best_move(depth):
+    best_move = chess.Move.null()
+
+    alpha = float('inf')
+    beta = float('-inf')
+    best_value = -99999
+
+    for move in board.legal_moves:
+        board.push(move)
+        board_value = -alpha_beta_nega(-beta, -alpha, depth-1)
+
+        if board_value > best_value:
+            best_value = board_value
+            best_move = move
+
+        if board_value > alpha:
+            alpha = board_value
+        
+        board.pop()
+    
+    return best_move
