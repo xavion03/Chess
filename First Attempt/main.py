@@ -126,3 +126,5 @@ def find_best_move(depth):
         board.pop()
     
     return best_move
+
+print(find_best_move(3))
