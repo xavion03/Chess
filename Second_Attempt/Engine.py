@@ -1,14 +1,13 @@
 import chess
 import chess.polyglot # for opening book
-
 from NewPieceTable import *
 
 board = chess.Board()
 
 #function that returns phase of game
-#opening = 1, middle = 2, end = 3
-def gamephase():
-    phase = 1
+#middle = 2, end = 3
+def check_gamephase():
+    phase = 2
     return phase
 
 def evaluate_material(phase):
@@ -61,7 +60,7 @@ def evaluate_position(phase):
     else:
         return evaluation
 
-def evaluate(phase):
+def evaluate():
 
     if board.is_checkmate():
         if board.turn(chess.WHITE):
@@ -75,6 +74,7 @@ def evaluate(phase):
     if board.is_insufficient_material():
         return 0
 
+    phase = check_gamephase()
     material_eval = evaluate_material(phase)
     positonal_eval = evaluate_position(phase)
 
@@ -84,10 +84,51 @@ def evaluate(phase):
        return total_eval
     else:
        return -total_eval
+    
+#implement negamax search with quiescence
+def search(alpha, beta, depth):
+    best_score = -9999
+
+    if depth == 0:
+        return quiescence
+    
+    for move in board.legal_moves:
+        board.push(move)
+        score = -search(-beta, -alpha, depth - 1)
+        board.pop()
+
+        if score >= beta:
+            return score
+        if score > best_score:
+            best_score = score
+        if score > alpha:
+            alpha = score
+
+    return best_score
    
    
+def quiescence(alpha, beta):
+    stand_pat = evaluate()
+    if(stand_pat >= beta):
+        return beta
+    if(alpha < stand_pat):
+        alpha = stand_pat
+
+    for move in board.legal_moves:
+        if board.is_capture(move):
+            board.push(move)
+            score = -quiescence( -beta, -alpha)
+            board.pop()
+
+            if(score >= beta):
+                return beta
+            if(score > alpha):
+                alpha = score
+
+    return alpha
     
+def best_move(depth){
     
-    
+}
 
     
