@@ -3,24 +3,25 @@ import chess.polyglot
 from NewPieceTable import *
 from Engine import *
 
-## basic program to test opening book
+while(1):
 
-""" while(1):
     print (board.legal_moves)
     print(board)
-    print('/n')
-    pmove = input('Input move: ')
-    if pmove == 'exit':
+    print('\n')
+
+    if board.is_checkmate() | board.is_stalemate() | board.is_insufficient_material():
+        print ("Game is over!")
         break
-    board.push_san(pmove)
-    print(board)
-    print('/n')
-    move = chess.polyglot.MemoryMappedReader("/workspaces/Chess/Second_Attempt/Book.bin").weighted_choice(board).move
+
+    player_move = input('Input move: ')
+    if player_move == 'exit':
+        break
+    
+    board.push_san(player_move)
+
+    move = find_best_move(3)
     board.push(move)
-    print(board)
-    print('/n')
- """
 
-
+ 
 
 

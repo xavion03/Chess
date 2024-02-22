@@ -63,7 +63,7 @@ def evaluate_position(phase):
 def evaluate():
 
     if board.is_checkmate():
-        if board.turn(chess.WHITE):
+        if board.turn:
             return 9999
         else: 
             return -9999
@@ -80,7 +80,7 @@ def evaluate():
 
     total_eval = material_eval + positonal_eval
 
-    if board.turn(chess.WHITE):
+    if board.turn:
        return total_eval
     else:
        return -total_eval
@@ -90,11 +90,11 @@ def search(alpha, beta, depth):
     best_score = -9999
 
     if depth == 0:
-        return quiescence
+        return quiescence(alpha, beta)
     
     for move in board.legal_moves:
         board.push(move)
-        score = -search(-beta, -alpha, depth - 1)
+        score = -search(-beta, -alpha, depth -  1)
         board.pop()
 
         if score >= beta:
@@ -127,8 +127,28 @@ def quiescence(alpha, beta):
 
     return alpha
     
-def best_move(depth){
-    
-}
+def find_best_move(depth):
+    try: 
+        move = chess.polyglot.MemoryMappedReader("/workspaces/Chess/Second_Attempt/Book.bin").weighted_choice(board).move
+        return move
+    except:
+        print ("Midgame Start")
+        alpha = -99999
+        beta = 99999
+        score = -99999
+        best_move = chess.Move.null()
 
-    
+        for move in board.legal_moves:
+            board.push(move)
+            search_score = -search(-beta, -alpha, depth - 1)
+
+            if search_score > score:
+                score = search_score
+                best_move = move
+            
+            if search_score > alpha:
+                alpha = search_score
+
+            board.pop()
+
+        return best_move
